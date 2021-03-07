@@ -16,17 +16,23 @@ public class Base : MonoBehaviour
             _melt_time = melt_time;
         }
     }
-    
-    // Start is called before the first frame update
+
+    private float initialized_time;
+    public GameObject destroyed_version;
+
     void Start()
     {
-        
+        print(melt_time);
+        initialized_time = Time.time;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Time.time - initialized_time > melt_time)
+        {
+            Instantiate(destroyed_version, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
     }
 
     public void Destroy_itself()
