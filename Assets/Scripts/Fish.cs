@@ -20,4 +20,9 @@ public class Fish : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void assign_text(GameObject text_bar)
+    {
+        text_field = text_bar;
+    }
 }

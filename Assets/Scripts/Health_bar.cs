@@ -19,8 +19,13 @@ public class Health_bar : MonoBehaviour
         health.rectTransform.sizeDelta = new Vector2(size, 40);
     }
 
-    public void update_health_bar(int amount)
+    public void reduce_health_bar(int amount)
     {
         size -= amount;
+    }
+
+    public Vector2 get_bar_size()
+    {
+        return health.rectTransform.sizeDelta;
     }
 }

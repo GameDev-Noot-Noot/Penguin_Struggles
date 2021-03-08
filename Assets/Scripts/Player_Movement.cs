@@ -23,15 +23,17 @@ public class Player_Movement : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     float bounciness = 0.5f;
 
-    public GameObject health_bar;
+    private Vector2 previous_direction = new Vector2(0, 0);
+    private Vector2 xAxis = new Vector2(1, 0);
 
+    public GameObject health_bar;
+    public GameObject scene_switcher;
     public static float fish_count;
     public static bool pack_attached;
 
     private Vector3 velocity;
     private Vector2 direction;
-    private Vector2 previous_direction = new Vector2(0,0);
-    private Vector2 xAxis = new Vector2(1, 0);
+    private float health_count;
     private float previous_angle;
     private float rotation;
 
@@ -40,16 +42,23 @@ public class Player_Movement : MonoBehaviour
         fish_count = 0f;
         pack_attached = false;
 
+        Vector2 size = health_bar.GetComponent<Health_bar>().get_bar_size();
+        health_count = size.x;
+
         float rotation = desiredRotation;
         previous_angle = calculateAngle(faceDirection, xAxis);
     }
 
     void Update()
     {
+        if (health_count < 1f)
+        {
+            scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
+        }
 
         if (fish_count > 2f)
         {
-            // Do something
+            // Populate the pack
         }
 
         update_movement();
@@ -63,7 +72,8 @@ public class Player_Movement : MonoBehaviour
         }
         else
         {
-            health_bar.GetComponent<Health_bar>().update_health_bar(amount);
+            health_bar.GetComponent<Health_bar>().reduce_health_bar(amount);
+            health_count -= amount;
         }
     }
 
