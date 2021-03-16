@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Penguin_Movement : MonoBehaviour
 {
+    /*
     int penguin_id;
     private Vector2 penguin_movement;
     private Velocity2 penguin_speed;
@@ -24,7 +25,8 @@ public class Penguin_Movement : MonoBehaviour
     {
         // this code is supposed to get the player's location and set the penguins location to the same but with a few values difference
         get
-        { return.player_movement;
+        { 
+            return.player_movement;
         }
 
         set 
@@ -39,12 +41,14 @@ public class Penguin_Movement : MonoBehaviour
     {
         // this code is supposed to get the player's speed and set the penguins to the same
         get
-        { return.player_speed;
+        { 
+            return player_speed;
         }
 
         set
-        { penguin_speed = player_speed;
+        { 
+            penguin_speed = player_speed;
         }
     }
-
+    */
 }
