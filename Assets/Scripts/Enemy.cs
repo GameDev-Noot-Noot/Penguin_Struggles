@@ -28,6 +28,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     public int segments = 50;
 
+    [SerializeField]
+    public float damage = 0.3f;
+
     private List<GameObject> ObjectsInRange = new List<GameObject>();
     LineRenderer line;
 
@@ -83,7 +86,7 @@ public class Enemy : MonoBehaviour
         else 
         { 
             following();
-            ObjectsInRange[0].GetComponent<Player_Movement>().reduce_hp(1);
+            ObjectsInRange[0].GetComponent<Player_Movement>().reduce_hp(damage*Time.deltaTime);
         }
     }
 

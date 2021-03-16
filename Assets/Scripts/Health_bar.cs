@@ -6,26 +6,31 @@ using UnityEngine.UI;
 public class Health_bar : MonoBehaviour
 {
     private Image health;
-    private int size;
+    private float size;
 
     void Start()
     {
-        health = GetComponent<Image>();
-        size = 200;
+        health = transform.GetChild(1).GetComponent<Image>();
+        size = health.fillAmount;
     }
 
     void Update()
     {
-        health.rectTransform.sizeDelta = new Vector2(size, 40);
+        health.fillAmount = size;
     }
 
-    public void reduce_health_bar(int amount)
+    public void reduce_health_bar(float amount)
     {
         size -= amount;
     }
 
-    public Vector2 get_bar_size()
+    public void increase_health_bar(float amount)
     {
-        return health.rectTransform.sizeDelta;
+        size += amount;
+    }
+
+    public float get_bar_size()
+    {
+        return transform.GetChild(1).GetComponent<Image>().fillAmount;
     }
 }

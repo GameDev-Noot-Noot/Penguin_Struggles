@@ -23,6 +23,9 @@ public class Player_Movement : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     float bounciness = 0.5f;
 
+    [SerializeField]
+    float recovery_time = 3f;
+
     private Vector2 previous_direction = new Vector2(0, 0);
     private Vector2 xAxis = new Vector2(1, 0);
 
@@ -36,14 +39,14 @@ public class Player_Movement : MonoBehaviour
     private float health_count;
     private float previous_angle;
     private float rotation;
+    private float last_reduce_hp_call = 0f;
 
     void Start()
     {
         fish_count = 0f;
         pack_attached = false;
 
-        Vector2 size = health_bar.GetComponent<Health_bar>().get_bar_size();
-        health_count = size.x;
+        health_count = health_bar.GetComponent<Health_bar>().get_bar_size();
 
         float rotation = desiredRotation;
         previous_angle = calculateAngle(faceDirection, xAxis);
@@ -51,7 +54,7 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
-        if (health_count < 1f)
+        if (health_count < 0f)
         {
             scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
         }
@@ -61,10 +64,18 @@ public class Player_Movement : MonoBehaviour
             // Populate the pack
         }
 
+        if (Time.time > last_reduce_hp_call + recovery_time)
+        {
+            if(health_count < 1f)
+            {
+                increase_hp(0.3f * Time.deltaTime);
+            }
+        }
         update_movement();
+        update_rotation();
     }
 
-    public void reduce_hp(int amount)
+    public void reduce_hp(float amount)
     {
         if (pack_attached != false)
         {
@@ -75,12 +86,19 @@ public class Player_Movement : MonoBehaviour
             health_bar.GetComponent<Health_bar>().reduce_health_bar(amount);
             health_count -= amount;
         }
+
+        last_reduce_hp_call = Time.time;
+    }
+
+    public void increase_hp(float amount)
+    {
+        health_bar.GetComponent<Health_bar>().increase_health_bar(amount);
+        health_count += amount;
     }
 
     public void increase_fish_count()
     {
         fish_count += 1;
-        print(fish_count);
     }
 
     private void update_movement()
@@ -120,6 +138,14 @@ public class Player_Movement : MonoBehaviour
         }
 
         transform.localPosition = newPosition;
+    }
+
+    private void update_rotation()
+    {
+        Vector2 playerInput; // Vector for storing player input
+        playerInput.x = Input.GetAxis("Horizontal");
+        playerInput.y = Input.GetAxis("Vertical");
+        playerInput = Vector2.ClampMagnitude(playerInput, 1f); // We are clamping the retrieved input values to unit lenght
 
         direction = playerInput;
         direction.Normalize();
@@ -138,6 +164,7 @@ public class Player_Movement : MonoBehaviour
 
                 if (checkVector == direction)
                 {
+                    print("a");
                     faceDirection.x = Mathf.Cos((previous_angle - rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle - rotation) * Mathf.Deg2Rad);
                     transform.Rotate(0f, 0f, -rotation);
@@ -145,13 +172,13 @@ public class Player_Movement : MonoBehaviour
                 }
                 else
                 {
+                    print("b");
                     faceDirection.x = Mathf.Cos((previous_angle + rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle + rotation) * Mathf.Deg2Rad);
                     transform.Rotate(0f, 0f, rotation);
                     previous_angle += rotation;
                 }
             }
-
             if (previous_angle == 360 || previous_angle == -360)
             {
                 previous_angle = 0;
