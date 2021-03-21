@@ -14,4 +14,14 @@ public class gui_methods : MonoBehaviour
         e.transform.SetParent(gameObject.transform);
         e.GetComponent<melt_bar>().set_melt_time(melt_time);
     }
+
+    public Transform get_health_bar()
+    {
+        return transform.GetChild(1);
+    }
+
+    public Transform get_fish_counter()
+    {
+        return transform.GetChild(2);
+    }
 }

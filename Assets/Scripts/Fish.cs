@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    public GameObject text_field;
+    public Transform text_field;
     // Update is called once per frame
     void Update()
     {
@@ -21,7 +21,7 @@ public class Fish : MonoBehaviour
         }
     }
 
-    public void assign_text(GameObject text_bar)
+    public void assign_text(Transform text_bar)
     {
         text_field = text_bar;
     }

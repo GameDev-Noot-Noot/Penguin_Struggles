@@ -21,6 +21,13 @@ public class Fish_Count : MonoBehaviour
 
     public void update_fish_count()
     {
-        count += 1;
+        if (count + 1 >= 3)
+        {
+            count = 0;
+        }
+        else
+        {
+            count += 1;
+        }
     }
 }

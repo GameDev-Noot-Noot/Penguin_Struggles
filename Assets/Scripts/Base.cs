@@ -19,12 +19,12 @@ public class Base : MonoBehaviour
 
     private float initialized_time;
     public GameObject destroyed_version;
-    public GameObject gui;
+    private GameObject gui;
 
     void Start()
     {
         initialized_time = Time.time;
-        gui.GetComponent<gui_methods>().create_melt_bar(melt_time);
+        //gui.GetComponent<gui_methods>().create_melt_bar(melt_time);
     }
 
     void Update()

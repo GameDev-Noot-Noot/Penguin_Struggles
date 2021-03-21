@@ -12,4 +12,9 @@ public class Scene_switcher : MonoBehaviour
     {
         SceneManager.LoadScene("Main_menu");
     }
+
+    public void quit()
+    {
+        Application.Quit();
+    }
 }

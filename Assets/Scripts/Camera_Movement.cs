@@ -41,4 +41,9 @@ public class Camera_Movement : MonoBehaviour
         transform.position = new_pos;
         y_pos_cam = transform.position.y;
     }
+
+    public void set_followed(GameObject player)
+    {
+        followed = player;
+    }
 }

@@ -29,24 +29,26 @@ public class Player_Movement : MonoBehaviour
     private Vector2 previous_direction = new Vector2(0, 0);
     private Vector2 xAxis = new Vector2(1, 0);
 
-    public GameObject health_bar;
-    public GameObject scene_switcher;
     public static float fish_count;
     public static bool pack_attached;
 
+    private GameObject scene_switcher;
+    private GameObject igloo;
+    private GameObject gui;
+    private Transform health_bar;
     private Vector3 velocity;
     private Vector2 direction;
-    private float health_count;
+    private float health_count = 1f;
     private float previous_angle;
     private float rotation;
     private float last_reduce_hp_call = 0f;
+    private bool base_exist = false;
+    private float base_time;
 
     void Start()
     {
         fish_count = 0f;
         pack_attached = false;
-
-        health_count = health_bar.GetComponent<Health_bar>().get_bar_size();
 
         float rotation = desiredRotation;
         previous_angle = calculateAngle(faceDirection, xAxis);
@@ -57,6 +59,23 @@ public class Player_Movement : MonoBehaviour
         if (health_count < 0f)
         {
             scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
+        }
+
+        if (Input.GetKey("space"))
+        {
+            if (base_exist != true)
+            {
+                GameObject k = Instantiate(igloo, transform.position, Quaternion.Euler(0, 0, 0));
+                gui.GetComponent<gui_methods>().create_melt_bar(5);
+                base_exist = true;
+                base_time = Time.time;
+            }
+            // k.GetComponent<Base>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
+        }
+
+        if (Time.time > base_time + 5f)
+        {
+            base_exist = false;
         }
 
         if (fish_count > 2f)
@@ -71,6 +90,7 @@ public class Player_Movement : MonoBehaviour
                 increase_hp(0.3f * Time.deltaTime);
             }
         }
+
         update_movement();
         update_rotation();
     }
@@ -99,6 +119,23 @@ public class Player_Movement : MonoBehaviour
     public void increase_fish_count()
     {
         fish_count += 1;
+    }
+
+    public void set_health_bar(Transform bar)
+    {
+        health_count = bar.GetComponent<Health_bar>().get_bar_size();
+        health_bar = bar;
+    }
+
+    public void set_scene_switcher(GameObject p)
+    {
+        scene_switcher = p;
+    }
+
+    public void set_igloo_and_gui(GameObject i, GameObject g)
+    {
+        igloo = i;
+        gui = g;
     }
 
     private void update_movement()
@@ -164,7 +201,6 @@ public class Player_Movement : MonoBehaviour
 
                 if (checkVector == direction)
                 {
-                    print("a");
                     faceDirection.x = Mathf.Cos((previous_angle - rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle - rotation) * Mathf.Deg2Rad);
                     transform.Rotate(0f, 0f, -rotation);
@@ -172,7 +208,6 @@ public class Player_Movement : MonoBehaviour
                 }
                 else
                 {
-                    print("b");
                     faceDirection.x = Mathf.Cos((previous_angle + rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle + rotation) * Mathf.Deg2Rad);
                     transform.Rotate(0f, 0f, rotation);
