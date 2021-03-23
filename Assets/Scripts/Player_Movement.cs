@@ -35,6 +35,8 @@ public class Player_Movement : MonoBehaviour
     private GameObject scene_switcher;
     private GameObject igloo;
     private GameObject gui;
+    private GameObject pack;
+
     private Transform health_bar;
     private Vector3 velocity;
     private Vector2 direction;
@@ -67,6 +69,7 @@ public class Player_Movement : MonoBehaviour
             {
                 GameObject k = Instantiate(igloo, transform.position, Quaternion.Euler(0, 0, 0));
                 gui.GetComponent<gui_methods>().create_melt_bar(5);
+                pack.GetComponent<Pack>().reassign_followed(k);
                 base_exist = true;
                 base_time = Time.time;
             }
@@ -228,5 +231,10 @@ public class Player_Movement : MonoBehaviour
         float angle_cos = Mathf.Acos((Vector2.Dot(first, second)) / (first.magnitude * second.magnitude));
         float result = (angle_cos * 180) / Mathf.PI;
         return result;
+    }
+
+    public void set_pack(GameObject p)
+    {
+        pack = p;
     }
 }

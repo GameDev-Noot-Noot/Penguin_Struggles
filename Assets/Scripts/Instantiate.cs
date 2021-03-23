@@ -14,18 +14,26 @@ public class Instantiate : MonoBehaviour
     public GameObject switcher;
     public GameObject camera;
     public GameObject igloo;
+    public GameObject pack;
+
+    private GameObject player_instance;
+    private GameObject pack_instance;
 
     void Start()
     {
         populate_fish();
         populate_enemy();
 
-        GameObject m = Instantiate(player, transform.position, Quaternion.Euler(90, 0, 0));
-        m.GetComponent<Player_Movement>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
-        m.GetComponent<Player_Movement>().set_scene_switcher(switcher);
-        m.GetComponent<Player_Movement>().set_igloo_and_gui(igloo, gui);
+        player_instance = Instantiate(player, transform.position, Quaternion.Euler(90, 0, 0));
+        player_instance.GetComponent<Player_Movement>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
+        player_instance.GetComponent<Player_Movement>().set_scene_switcher(switcher);
+        player_instance.GetComponent<Player_Movement>().set_igloo_and_gui(igloo, gui);
 
-        camera.GetComponent<Camera_Movement>().set_followed(m);
+        camera.GetComponent<Camera_Movement>().set_followed(player_instance);
+
+        pack_instance = Instantiate(pack, transform.position, Quaternion.Euler(90, 0, 0));
+        pack_instance.GetComponent<Pack>().set_followed(player_instance);
+        player_instance.GetComponent<Player_Movement>().set_pack(pack_instance);
     }
 
     void Update()
@@ -34,6 +42,8 @@ public class Instantiate : MonoBehaviour
         {
             populate_fish();
             populate_enemy();
+            pack_instance.GetComponent<Pack>().instantiate_child(random_pos());
+            //GameObject p = Instantiate(child, random_pos(), Quaternion.Euler(90, 0, 0));
         }
     }
 

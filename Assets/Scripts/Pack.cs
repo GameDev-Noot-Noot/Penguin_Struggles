@@ -4,66 +4,45 @@ using UnityEngine;
 
 public class Pack : MonoBehaviour
 {
-    /*
-    public int totalPackCount;
-    public int basePackCount;
-    public int followingPackCount;
-    public bool following;
-    public bool attacked;
+    private int size;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        totalPackCount = 0;
-        basePackCount = 0;
-        followingPackCount = 0;
-    }
+    public GameObject child;
+    private GameObject followed;
+    private GameObject previous_followed;
 
-    // Update is called once per frame
     void Update()
     {
-        // an interaction in enemy class will set attacked to true
-        if (attacked == true)
+        if (followed == null)
         {
-            followingPackCount--;
-            if (followingPackCount == 0)
-            {
-                // loads the game over screen
-                GameOver;
-            }
-        }
-
-        basePackCount + followingPackCount = totalPackCount;
-        if (totalPackCount == XX) // need to agree on a value
-        {
-            // loads the victory screen
-            Win;
+            reassign_followed(previous_followed);
         }
     }
 
-    void BasePenguinPack()
+
+    public void instantiate_child(Vector3 pos)
     {
-        // an interaction in the base class will set fed to true
-        if (fed == true)
-        {
-            basePackCount++;
-        }
-        // make an interaction with penguin in Player class to set following to true
-        if (following == true)
-        {
-            followingPackCount++;
-            basePackCount--;
-        }
+        GameObject p = Instantiate(child, pos, Quaternion.Euler(90, 0, 0));
+        p.GetComponent<Penguin>().set_followed(followed);
+        p.transform.SetParent(transform);
     }
 
-    void FollowingPenguinPack()
+    public int get_pack_size()
     {
-        // make an interaction with penguin in Player class to set following to false
-        if (following == false)
-        {
-            basePackCount++;
-            followingPackCount--;
-        }
+        return transform.childCount;
+    }
 
-    }*/
+    public void set_followed(GameObject e)
+    {
+        followed = e;
+        previous_followed = e;
+    }
+
+    public void reassign_followed(GameObject e)
+    {
+        followed = e;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<Penguin>().set_followed(followed);
+        }
+    }
 }

@@ -253,7 +253,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250740992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.686, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -698,6 +698,7 @@ MonoBehaviour:
   switcher: {fileID: 519887732}
   camera: {fileID: 963194225}
   igloo: {fileID: 7391025978250082543, guid: c11dc0621dfd6304193f7c836586daad, type: 3}
+  pack: {fileID: 8591628280313997878, guid: 808361001ecbf074794f201ccaa1aa70, type: 3}
 --- !u!4 &823337226
 Transform:
   m_ObjectHideFlags: 0

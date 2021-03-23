@@ -141,7 +141,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!120 &5311046336424260356
 LineRenderer:
@@ -262,7 +262,7 @@ MonoBehaviour:
   maxSpeed: 1
   maxAcceleration: 10
   bounciness: 0.5
-  walking_speed_enemy: 0.975
+  walking_speed_enemy: 0.985
   segments: 50
   damage: 0.3
 --- !u!1 &5695141448332622402
