@@ -19,6 +19,8 @@ public class Instantiate : MonoBehaviour
     private GameObject player_instance;
     private GameObject pack_instance;
 
+    private int populate_iterations = 1;
+
     void Start()
     {
         populate_fish();
@@ -41,9 +43,14 @@ public class Instantiate : MonoBehaviour
         if (gameObject.transform.childCount < 1)
         {
             populate_fish();
-            populate_enemy();
+            if (populate_iterations % 2 == 0)
+            {
+                populate_enemy();
+            }
+
             pack_instance.GetComponent<Pack>().instantiate_child(random_pos());
             //GameObject p = Instantiate(child, random_pos(), Quaternion.Euler(90, 0, 0));
+            populate_iterations += 1;
         }
     }
 
