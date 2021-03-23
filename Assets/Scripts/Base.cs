@@ -19,11 +19,12 @@ public class Base : MonoBehaviour
 
     private float initialized_time;
     public GameObject destroyed_version;
+    private GameObject gui;
 
     void Start()
     {
-        print(melt_time);
         initialized_time = Time.time;
+        //gui.GetComponent<gui_methods>().create_melt_bar(melt_time);
     }
 
     void Update()
@@ -33,10 +34,5 @@ public class Base : MonoBehaviour
             Instantiate(destroyed_version, transform.position, transform.rotation);
             Destroy(gameObject);
         }
-    }
-
-    public void Destroy_itself()
-    {
-        Destroy(this);
     }
 }

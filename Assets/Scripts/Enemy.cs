@@ -28,6 +28,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     public int segments = 50;
 
+    [SerializeField]
+    public float damage = 0.3f;
+
     private List<GameObject> ObjectsInRange = new List<GameObject>();
     LineRenderer line;
 
@@ -66,6 +69,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         draw_vision_circle();
+
         if (ObjectsInRange.Count != 0) { state = "follow"; } //making sure the state of Enemy object is changed if there is an object in the vision field
         else { state = "search"; }
 
@@ -83,7 +87,7 @@ public class Enemy : MonoBehaviour
         else 
         { 
             following();
-            ObjectsInRange[0].GetComponent<Player_Movement>().reduce_hp(1);
+            ObjectsInRange[0].GetComponent<Player_Movement>().reduce_hp(damage*Time.deltaTime);
         }
     }
 
@@ -108,7 +112,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void draw_vision_circle() //method creating the visualization of enemy's vision field
+    private void draw_vision_circle() //method for creating the visualization of enemy's vision field
     {
         float x;
         float z;
@@ -120,14 +124,14 @@ public class Enemy : MonoBehaviour
             x = Mathf.Sin(Mathf.Deg2Rad * angle) * vision_field;
             z = Mathf.Cos(Mathf.Deg2Rad * angle) * vision_field;
 
-            line.SetPosition(i, new Vector3(x, 0, z));
+            line.SetPosition(i, new Vector3(z, x, 0));
 
             angle += (360f / segments);
         }
 
     }
 
-    public void searching(Vector2 dir) //method of Enemy searching for another object
+    private void searching(Vector2 dir) //method of Enemy searching for another object
     {
         Vector2 playerInput = dir;
         playerInput = Vector2.ClampMagnitude(playerInput, 1f); // We are clamping the retrieved input values to unit lenght
@@ -163,6 +167,11 @@ public class Enemy : MonoBehaviour
 
         transform.localPosition = newPosition;
 
+        update_rotation(playerInput);
+    }
+
+    private void update_rotation(Vector2 playerInput)
+    {
         direction = playerInput;
         direction.Normalize();
 
@@ -182,18 +191,17 @@ public class Enemy : MonoBehaviour
                 {
                     faceDirection.x = Mathf.Cos((previous_angle - rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle - rotation) * Mathf.Deg2Rad);
-                    transform.Rotate(0f, -rotation, 0f);
+                    transform.Rotate(0f, 0f, -rotation);
                     previous_angle -= rotation;
                 }
                 else
                 {
                     faceDirection.x = Mathf.Cos((previous_angle + rotation) * Mathf.Deg2Rad);
                     faceDirection.y = Mathf.Sin((previous_angle + rotation) * Mathf.Deg2Rad);
-                    transform.Rotate(0f, -rotation, 0f);
+                    transform.Rotate(0f, 0f, rotation);
                     previous_angle += rotation;
                 }
             }
-
             if (previous_angle == 360 || previous_angle == -360)
             {
                 previous_angle = 0;
@@ -203,8 +211,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void following() //method making the Enemy object follow the object that entered the vision field
+    private void following() //method making the Enemy object follow the object that entered the vision field
     {
+        Vector2 dir = new Vector2(ObjectsInRange[0].transform.position.x - transform.position.x, ObjectsInRange[0].transform.position.z - transform.position.z);
+        dir.Normalize();
+        update_rotation(dir);
         transform.position = walking_speed_enemy * transform.position +  (1f - walking_speed_enemy) * (ObjectsInRange[0].transform.position + new Vector3(0.2f, 0f, 0.2f));
     }
 

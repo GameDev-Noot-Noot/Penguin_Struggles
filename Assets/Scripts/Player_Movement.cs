@@ -23,27 +23,34 @@ public class Player_Movement : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     float bounciness = 0.5f;
 
+    [SerializeField]
+    float recovery_time = 3f;
+
     private Vector2 previous_direction = new Vector2(0, 0);
     private Vector2 xAxis = new Vector2(1, 0);
 
-    public GameObject health_bar;
-    public GameObject scene_switcher;
     public static float fish_count;
     public static bool pack_attached;
 
+    private GameObject scene_switcher;
+    private GameObject igloo;
+    private GameObject gui;
+    private GameObject pack;
+
+    private Transform health_bar;
     private Vector3 velocity;
     private Vector2 direction;
-    private float health_count;
+    private float health_count = 1f;
     private float previous_angle;
     private float rotation;
+    private float last_reduce_hp_call = 0f;
+    private bool base_exist = false;
+    private float base_time;
 
     void Start()
     {
         fish_count = 0f;
         pack_attached = false;
-
-        Vector2 size = health_bar.GetComponent<Health_bar>().get_bar_size();
-        health_count = size.x;
 
         float rotation = desiredRotation;
         previous_angle = calculateAngle(faceDirection, xAxis);
@@ -51,9 +58,27 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
-        if (health_count < 1f)
+        if (health_count < 0f)
         {
             scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
+        }
+
+        if (Input.GetKey("space"))
+        {
+            if (base_exist != true)
+            {
+                GameObject k = Instantiate(igloo, transform.position, Quaternion.Euler(0, 0, 0));
+                gui.GetComponent<gui_methods>().create_melt_bar(5);
+                pack.GetComponent<Pack>().reassign_followed(k);
+                base_exist = true;
+                base_time = Time.time;
+            }
+            // k.GetComponent<Base>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
+        }
+
+        if (Time.time > base_time + 5f)
+        {
+            base_exist = false;
         }
 
         if (fish_count > 2f)
@@ -61,10 +86,19 @@ public class Player_Movement : MonoBehaviour
             // Populate the pack
         }
 
+        if (Time.time > last_reduce_hp_call + recovery_time)
+        {
+            if(health_count < 1f)
+            {
+                increase_hp(0.3f * Time.deltaTime);
+            }
+        }
+
         update_movement();
+        update_rotation();
     }
 
-    public void reduce_hp(int amount)
+    public void reduce_hp(float amount)
     {
         if (pack_attached != false)
         {
@@ -75,12 +109,36 @@ public class Player_Movement : MonoBehaviour
             health_bar.GetComponent<Health_bar>().reduce_health_bar(amount);
             health_count -= amount;
         }
+
+        last_reduce_hp_call = Time.time;
+    }
+
+    public void increase_hp(float amount)
+    {
+        health_bar.GetComponent<Health_bar>().increase_health_bar(amount);
+        health_count += amount;
     }
 
     public void increase_fish_count()
     {
         fish_count += 1;
-        print(fish_count);
+    }
+
+    public void set_health_bar(Transform bar)
+    {
+        health_count = bar.GetComponent<Health_bar>().get_bar_size();
+        health_bar = bar;
+    }
+
+    public void set_scene_switcher(GameObject p)
+    {
+        scene_switcher = p;
+    }
+
+    public void set_igloo_and_gui(GameObject i, GameObject g)
+    {
+        igloo = i;
+        gui = g;
     }
 
     private void update_movement()
@@ -120,6 +178,14 @@ public class Player_Movement : MonoBehaviour
         }
 
         transform.localPosition = newPosition;
+    }
+
+    private void update_rotation()
+    {
+        Vector2 playerInput; // Vector for storing player input
+        playerInput.x = Input.GetAxis("Horizontal");
+        playerInput.y = Input.GetAxis("Vertical");
+        playerInput = Vector2.ClampMagnitude(playerInput, 1f); // We are clamping the retrieved input values to unit lenght
 
         direction = playerInput;
         direction.Normalize();
@@ -151,7 +217,6 @@ public class Player_Movement : MonoBehaviour
                     previous_angle += rotation;
                 }
             }
-
             if (previous_angle == 360 || previous_angle == -360)
             {
                 previous_angle = 0;
@@ -166,5 +231,10 @@ public class Player_Movement : MonoBehaviour
         float angle_cos = Mathf.Acos((Vector2.Dot(first, second)) / (first.magnitude * second.magnitude));
         float result = (angle_cos * 180) / Mathf.PI;
         return result;
+    }
+
+    public void set_pack(GameObject p)
+    {
+        pack = p;
     }
 }
