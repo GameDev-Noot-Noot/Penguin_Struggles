@@ -98,4 +98,9 @@ public class Penguin : MonoBehaviour
     {
         followed = p;
     }
+
+    public void destroy_self()
+    {
+        Destroy(gameObject);
+    }
 }

@@ -26,6 +26,12 @@ public class Player_Movement : MonoBehaviour
     [SerializeField]
     float recovery_time = 3f;
 
+    [SerializeField]
+    float penguin_recovery_time = 1f;
+
+    [SerializeField]
+    int win_condition_count = 10;
+
     private Vector2 previous_direction = new Vector2(0, 0);
     private Vector2 xAxis = new Vector2(1, 0);
 
@@ -46,6 +52,7 @@ public class Player_Movement : MonoBehaviour
     private float last_reduce_hp_call = 0f;
     private bool base_exist = false;
     private float base_time;
+    private float last_attack;
 
     void Start()
     {
@@ -58,6 +65,15 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
+        if (pack.GetComponent<Pack>().get_followed() == transform)
+        {
+            pack_attached = true;
+        }
+        else
+        {
+            pack_attached = false;
+        }
+
         if (health_count < 0f)
         {
             sceneChanger.GetComponent<SceneChanger>().GoToLossScene();
@@ -81,9 +97,9 @@ public class Player_Movement : MonoBehaviour
             base_exist = false;
         }
 
-        if (fish_count > 2f)
+        if (pack.GetComponent<Pack>().get_pack_size() > win_condition_count)
         {
-            // Populate the pack
+            scene_switcher.GetComponent<Scene_switcher>().win_screen();
         }
 
         if (Time.time > last_reduce_hp_call + recovery_time)
@@ -102,10 +118,15 @@ public class Player_Movement : MonoBehaviour
     {
         if (pack_attached != false)
         {
-            print("send message to lower penguin count");
+            if(Time.time > last_attack + penguin_recovery_time)
+            {
+                pack.GetComponent<Pack>().destroy_last_child();
+                last_attack = Time.time;
+            }
         }
         else
         {
+            last_attack = 0f;
             health_bar.GetComponent<Health_bar>().reduce_health_bar(amount);
             health_count -= amount;
         }
