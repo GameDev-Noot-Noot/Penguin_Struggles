@@ -4,45 +4,54 @@ using UnityEngine;
 
 public class Pack : MonoBehaviour
 {
-    private int size;
+    /*
+    public int penguinBaseCount;
+    public int penguinPackCount;
+    public bool following;
+    public bool attacked;
 
-    public GameObject child;
-    private GameObject followed;
-    private GameObject previous_followed;
+    // Start is called before the first frame update
+    void Start()
+    {
+        penguinBaseCount = 0;
+        penguinPackCount = 0;
+    }
 
+    // Update is called once per frame
     void Update()
     {
-        if (followed == null)
+        
+    }
+
+    void PenguinBase()
+    {
+        // an interaction in the base class will set fed to true
+        if (fed == true)
         {
-            reassign_followed(previous_followed);
+            penguinBaseCount++;
+        }
+
+        if (penguinBase <= 0) // if there are no penguins in the base, then there are no penguins to move to the pack
+        {
+            Debug.Log("Missing penguins."); // mainly test if it works
+        } else if (penguinBase >= 1) // if there are any penguins, then one gets moved
+        {
+            penguinPackCount++;
+            penguinBaseCount--;
+            Debug.Log("A penguin went to the pack."); // mainly test if it works
         }
     }
 
-
-    public void instantiate_child(Vector3 pos)
+    void PenguinPack()
     {
-        GameObject p = Instantiate(child, pos, Quaternion.Euler(90, 0, 0));
-        p.GetComponent<Penguin>().set_followed(followed);
-        p.transform.SetParent(transform);
-    }
-
-    public int get_pack_size()
-    {
-        return transform.childCount;
-    }
-
-    public void set_followed(GameObject e)
-    {
-        followed = e;
-        previous_followed = e;
-    }
-
-    public void reassign_followed(GameObject e)
-    {
-        followed = e;
-        for (int i = 0; i < transform.childCount; i++)
+        if (penguinPack <= 0) // if there are no penguins in the pack, then there are no penguins to move to the base
         {
-            transform.GetChild(i).GetComponent<Penguin>().set_followed(followed);
+            Debug.Log("Missing penguins."); // mainly test if it works
+        } else if (penguinPack >= 1)  // if there are any penguins, then one gets moved
+        {
+            penguinBaseCount++;
+            penguinPackCount--;
+            Debug.Log("A penguin went to the base."); // mainly test if it works
         }
-    }
+    }*/
 }
