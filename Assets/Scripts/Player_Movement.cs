@@ -32,7 +32,7 @@ public class Player_Movement : MonoBehaviour
     public static float fish_count;
     public static bool pack_attached;
 
-    private GameObject scene_switcher;
+    private GameObject sceneChanger;
     private GameObject igloo;
     private GameObject gui;
     private GameObject pack;
@@ -60,7 +60,7 @@ public class Player_Movement : MonoBehaviour
     {
         if (health_count < 0f)
         {
-            scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
+            sceneChanger.GetComponent<SceneChanger>().GoToLossScene();
         }
 
         if (Input.GetKey("space"))
@@ -132,7 +132,7 @@ public class Player_Movement : MonoBehaviour
 
     public void set_scene_switcher(GameObject p)
     {
-        scene_switcher = p;
+        sceneChanger = p;
     }
 
     public void set_igloo_and_gui(GameObject i, GameObject g)
