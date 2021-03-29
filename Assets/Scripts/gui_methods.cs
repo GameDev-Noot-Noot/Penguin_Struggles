@@ -5,6 +5,8 @@ using UnityEngine;
 public class gui_methods : MonoBehaviour
 {
     public GameObject melt_bar;
+    public GameObject pause_menu;
+    public GameObject pause_menu_instance;
 
     public void create_melt_bar(float melt_time)
     {
@@ -23,5 +25,18 @@ public class gui_methods : MonoBehaviour
     public Transform get_fish_counter()
     {
         return transform.GetChild(2);
+    }
+
+    public void create_pause_screen()
+    {
+        pause_menu_instance = Instantiate(pause_menu, transform.position, transform.rotation);
+        pause_menu_instance.transform.SetParent(gameObject.transform);
+        Time.timeScale = 0f;
+    }
+
+    public void remove_pause_screen()
+    {
+        Time.timeScale = 1f;
+        Destroy(pause_menu_instance);
     }
 }

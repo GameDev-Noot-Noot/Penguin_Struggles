@@ -346,7 +346,7 @@ Transform:
   m_GameObject: {fileID: 299281305}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 10, y: 2, z: 10}
+  m_LocalScale: {x: 11, y: 2, z: 11}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -485,6 +485,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   melt_bar: {fileID: 156448767099236214, guid: 3121e224af5240945a4c1de515f0897a, type: 3}
+  pause_menu: {fileID: 6827050001073886122, guid: 62e3b9775c6fec64ea820e0ada519c8b,
+    type: 3}
+  pause_menu_instance: {fileID: 0}
 --- !u!114 &665076123
 MonoBehaviour:
   m_ObjectHideFlags: 0
