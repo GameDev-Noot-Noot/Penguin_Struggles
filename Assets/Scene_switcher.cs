@@ -17,4 +17,9 @@ public class Scene_switcher : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void win_screen()
+    {
+        SceneManager.LoadScene("win_menu");
+    }
 }

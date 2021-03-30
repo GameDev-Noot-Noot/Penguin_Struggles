@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
+    [SerializeField]
+    float rotation = 5f;
+    
     public Transform text_field;
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0f, 5f, 0f);
+        transform.Rotate(0f, rotation * Time.deltaTime, 0f);
     }
 
     public void OnTriggerEnter(Collider col)

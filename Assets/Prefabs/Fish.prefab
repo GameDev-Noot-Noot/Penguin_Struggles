@@ -123,4 +123,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e1a2a74526a0a4087eed8587ed5f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotation: 150
   text_field: {fileID: 0}

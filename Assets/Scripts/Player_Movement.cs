@@ -26,6 +26,12 @@ public class Player_Movement : MonoBehaviour
     [SerializeField]
     float recovery_time = 3f;
 
+    [SerializeField]
+    float penguin_recovery_time = 1f;
+
+    [SerializeField]
+    int win_condition_count = 10;
+
     private Vector2 previous_direction = new Vector2(0, 0);
     private Vector2 xAxis = new Vector2(1, 0);
 
@@ -46,6 +52,8 @@ public class Player_Movement : MonoBehaviour
     private float last_reduce_hp_call = 0f;
     private bool base_exist = false;
     private float base_time;
+    private float last_attack;
+    private bool paused = false;
 
     void Start()
     {
@@ -58,6 +66,15 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
+        if (pack.GetComponent<Pack>().get_followed() == transform)
+        {
+            pack_attached = true;
+        }
+        else
+        {
+            pack_attached = false;
+        }
+
         if (health_count < 0f)
         {
             scene_switcher.GetComponent<Scene_switcher>().GotoMenuScene();
@@ -65,7 +82,7 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey("space"))
         {
-            if (base_exist != true)
+            if (base_exist != true && paused != true)
             {
                 GameObject k = Instantiate(igloo, transform.position, Quaternion.Euler(0, 0, 0));
                 gui.GetComponent<gui_methods>().create_melt_bar(5);
@@ -73,7 +90,28 @@ public class Player_Movement : MonoBehaviour
                 base_exist = true;
                 base_time = Time.time;
             }
-            // k.GetComponent<Base>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
+        }
+
+        if (Time.timeScale != 1f)
+        {
+            paused = true;
+        }
+        else
+        {
+            paused = false;
+        }
+
+
+        if (Input.GetKeyUp("escape"))
+        {
+            if (paused == false)
+            {
+                gui.GetComponent<gui_methods>().create_pause_screen();
+            }
+            else
+            {
+                gui.GetComponent<gui_methods>().remove_pause_screen();
+            }
         }
 
         if (Time.time > base_time + 5f)
@@ -81,9 +119,9 @@ public class Player_Movement : MonoBehaviour
             base_exist = false;
         }
 
-        if (fish_count > 2f)
+        if (pack.GetComponent<Pack>().get_pack_size() > win_condition_count)
         {
-            // Populate the pack
+            scene_switcher.GetComponent<Scene_switcher>().win_screen();
         }
 
         if (Time.time > last_reduce_hp_call + recovery_time)
@@ -102,10 +140,15 @@ public class Player_Movement : MonoBehaviour
     {
         if (pack_attached != false)
         {
-            print("send message to lower penguin count");
+            if(Time.time > last_attack + penguin_recovery_time)
+            {
+                pack.GetComponent<Pack>().destroy_last_child();
+                last_attack = Time.time;
+            }
         }
         else
         {
+            last_attack = 0f;
             health_bar.GetComponent<Health_bar>().reduce_health_bar(amount);
             health_count -= amount;
         }
@@ -178,6 +221,16 @@ public class Player_Movement : MonoBehaviour
         }
 
         transform.localPosition = newPosition;
+
+        if (playerInput != new Vector2(0f, 0f))
+        {
+            transform.GetChild(0).GetComponent<penguin_animations>().walk();
+        }
+
+        else
+        {
+            transform.GetChild(0).GetComponent<penguin_animations>().idle();
+        }
     }
 
     private void update_rotation()

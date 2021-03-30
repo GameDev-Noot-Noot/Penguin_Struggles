@@ -45,4 +45,24 @@ public class Pack : MonoBehaviour
             transform.GetChild(i).GetComponent<Penguin>().set_followed(followed);
         }
     }
+
+    public Transform get_followed()
+    {
+        if (get_pack_size() > 0 && followed != null)
+        {
+            return followed.transform;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void destroy_last_child()
+    {
+        if(get_pack_size() > 0)
+        {
+            transform.GetChild(transform.childCount - 1).GetComponent<Penguin>().destroy_self();
+        }
+    }
 }
