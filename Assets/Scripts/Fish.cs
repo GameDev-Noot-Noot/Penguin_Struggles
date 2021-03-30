@@ -15,6 +15,7 @@ public class Fish : MonoBehaviour
     {
         if (col.gameObject.tag == "Player") 
         {
+            FindObjectOfType<AudioManager>().Play("fishPicked");
             col.GetComponent<Player_Movement>().increase_fish_count();
             text_field.GetComponent<Fish_Count>().update_fish_count();
             Destroy(gameObject);

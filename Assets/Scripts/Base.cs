@@ -31,6 +31,7 @@ public class Base : MonoBehaviour
     {
         if (Time.time - initialized_time > melt_time)
         {
+            FindObjectOfType<AudioManager>().Play("iglooFall");
             Instantiate(destroyed_version, transform.position, transform.rotation);
             Destroy(gameObject);
         }
