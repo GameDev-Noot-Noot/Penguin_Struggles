@@ -42,6 +42,7 @@ public class Instantiate : MonoBehaviour
     {
         if (gameObject.transform.childCount < 1)
         {
+            FindObjectOfType<AudioManager>().Play("newPenguin");
             populate_fish();
             if (populate_iterations % 2 == 0)
             {

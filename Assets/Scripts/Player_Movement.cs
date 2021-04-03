@@ -53,6 +53,7 @@ public class Player_Movement : MonoBehaviour
     private bool base_exist = false;
     private float base_time;
     private float last_attack;
+    private bool paused = false;
 
     void Start()
     {
@@ -81,7 +82,7 @@ public class Player_Movement : MonoBehaviour
 
         if (Input.GetKey("space"))
         {
-            if (base_exist != true)
+            if (base_exist != true && paused != true)
             {
                 GameObject k = Instantiate(igloo, transform.position, Quaternion.Euler(0, 0, 0));
                 gui.GetComponent<gui_methods>().create_melt_bar(5);
@@ -89,7 +90,28 @@ public class Player_Movement : MonoBehaviour
                 base_exist = true;
                 base_time = Time.time;
             }
-            // k.GetComponent<Base>().set_health_bar(gui.GetComponent<gui_methods>().get_health_bar());
+        }
+
+        if (Time.timeScale != 1f)
+        {
+            paused = true;
+        }
+        else
+        {
+            paused = false;
+        }
+
+
+        if (Input.GetKeyUp("escape"))
+        {
+            if (paused == false)
+            {
+                gui.GetComponent<gui_methods>().create_pause_screen();
+            }
+            else
+            {
+                gui.GetComponent<gui_methods>().remove_pause_screen();
+            }
         }
 
         if (Time.time > base_time + 5f)
@@ -168,7 +190,7 @@ public class Player_Movement : MonoBehaviour
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.y = Input.GetAxis("Vertical");
         playerInput = Vector2.ClampMagnitude(playerInput, 1f); // We are clamping the retrieved input values to unit lenght
-
+       
         Vector3 desiredVelocity = new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed; // We specify our desired velocity by multiplying maximum speed by user input
         float maxSpeedChange = maxAcceleration * Time.deltaTime;
         velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
@@ -199,6 +221,16 @@ public class Player_Movement : MonoBehaviour
         }
 
         transform.localPosition = newPosition;
+
+        if (playerInput != new Vector2(0f, 0f))
+        {
+            transform.GetChild(0).GetComponent<penguin_animations>().walk();
+        }
+
+        else
+        {
+            transform.GetChild(0).GetComponent<penguin_animations>().idle();
+        }
     }
 
     private void update_rotation()
