@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3296747030891607525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3296747030891607527}
+  - component: {fileID: 3296747030891607526}
+  - component: {fileID: 3296747030891607520}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3296747030891607527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296747030891607525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3296747030891607526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296747030891607525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4d351c9cedc2e4c869ef01ee9a0344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: win
+    clip: {fileID: 8300000, guid: a736965a729b1174c9085d6f6000ccad, type: 3}
+    volume: 0.33
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: iglooFall
+    clip: {fileID: 8300000, guid: e00c7312cb61c7646858de92b9cfe21b, type: 3}
+    volume: 0.04
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: theme
+    clip: {fileID: 8300000, guid: eaa65ee7850c3674fb3041cd7515c44f, type: 3}
+    volume: 0.025
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: fishPicked
+    clip: {fileID: 8300000, guid: 7cad726cb717a364aac813aa46d42697, type: 3}
+    volume: 0.18
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Penguin_down
+    clip: {fileID: 8300000, guid: f72436f6c951b0e41b98e7d9772dbce6, type: 3}
+    volume: 0.02
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: newPenguin
+    clip: {fileID: 8300000, guid: a7c888e0a6a1fad4091bc297fa87ab43, type: 3}
+    volume: 0.09
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: lost
+    clip: {fileID: 8300000, guid: 2e382a1aaab074d4b8d9b0cdc04c7cba, type: 3}
+    volume: 0.09
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!81 &3296747030891607520
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296747030891607525}
+  m_Enabled: 1
