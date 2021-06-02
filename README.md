@@ -1,2 +1,2 @@
-# Penguin_Struggles
+# "Penguin Struggles"
 Game for TaPoGaDaD course.
